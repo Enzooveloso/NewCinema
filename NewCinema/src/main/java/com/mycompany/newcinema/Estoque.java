@@ -21,7 +21,7 @@ public class Estoque
     private int quantidadePipoca;
     private int quantidadeGuloseimas;
     private int quantidadeBebidas;
-    private static int N_INSTANCIAS;
+    
             /**
              * Construtor padrão que inicializa o estoque com listas vazias e
              * contadores zerados.
@@ -59,6 +59,7 @@ public class Estoque
         {
             quantidadeBebidas++;
         }
+        Produto.setN_INSTANCIAS(+1);
         return novoProduto;
     }
 
@@ -109,35 +110,16 @@ public class Estoque
      * faltam para o produto vencer e remove os produtos que estão fora da
      * validade.
      */
-    public void verificarValidade()
-    {
-        LocalDate hoje = LocalDate.now();
+    /**
+     * Verifica a validade dos produtos no estoque e remove os que estão vencidos.
+     */
+    public void verificarValidade() {
         Iterator<Produto> iterator = produtos.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             Produto produto = iterator.next();
-            LocalDate validade = produto.getValidade();
-            if (validade.isBefore(hoje))
-            {
-                System.out.println("Produto vencido: " + produto.getNome() + " - Removendo do estoque.");
+            if (produto.getValidade().isBefore(LocalDate.now())) {
                 iterator.remove();
-                if (produto.getNome().toLowerCase().contains("pipoca"))
-                {
-                    quantidadePipoca--;
-                }
-                else if (produto.getNome().toLowerCase().contains("guloseima"))
-                {
-                    quantidadeGuloseimas--;
-                }
-                else if (produto.getNome().toLowerCase().contains("bebida"))
-                {
-                    quantidadeBebidas--;
-                }
-            }
-            else
-            {
-                long diasParaVencer = ChronoUnit.DAYS.between(hoje, validade);
-                System.out.println("Produto: " + produto.getNome() + " - Dias para vencer: " + diasParaVencer);
+                System.out.println("Produto removido por validade vencida: " + produto.getNome());
             }
         }
     }

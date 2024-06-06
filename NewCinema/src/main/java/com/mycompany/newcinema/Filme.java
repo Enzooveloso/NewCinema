@@ -6,20 +6,18 @@ package com.mycompany.newcinema;
 
 import java.time.Duration;
 import java.util.Comparator;
-import java.util.List;
+
 
 /**
  *
  * @author enzov
  */
 //interface Comparator é parametrizada para comparar objetos do tipo Filme
-public class Filme implements Comparator<Filme>
+public class Filme 
 {
 
     private String titulo;
-
     private String genero;
-
     private Duration duracao;
     private int totalEspectadores;
     private long tempoTotalExibicao;
@@ -93,6 +91,9 @@ public class Filme implements Comparator<Filme>
         this.tempoTotalExibicao += quantidade * duracao.toMinutes();
     }
 
+    
+
+    
     @Override
     public String toString()
     {
@@ -103,9 +104,4 @@ public class Filme implements Comparator<Filme>
                 + '}';
     }
 
-    @Override // está fazendo a comparação entre dois filmes por ordem alfabética
-    public int compare(Filme f1, Filme f2)
-    {
-        return f1.getTitulo().compareTo(f2.getTitulo());
-    }
 }

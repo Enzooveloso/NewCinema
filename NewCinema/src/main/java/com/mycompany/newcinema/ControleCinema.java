@@ -4,107 +4,92 @@
  */
 package com.mycompany.newcinema;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author enzov
- */
-public class ControleCinema
-{
-
-    private List<Caixa> caixas;
+public class ControleCinema {
     private Estoque estoque;
     private List<Filme> filmes;
+    
 
-    public ControleCinema(List<Caixa> caixas, Estoque estoque, List<Filme> filmes)
-    {
-        this.caixas = caixas;
+    public ControleCinema(Estoque estoque, List<Filme> filmes) {
         this.estoque = estoque;
         this.filmes = filmes;
     }
 
-    public void balancoMensal()
-    {
+    public void balancoMensal() {
         double totalVendas = 0;
-        for (Caixa caixa : caixas)
-        {
+        for (Caixa caixa : Caixa.getBalcoes()) {
             totalVendas += caixa.valorTotalVendasMensais();
         }
         System.out.println("Balanço mensal total: R$" + totalVendas);
     }
 
-    public void relatorioDiarioCaixa(int caixaId)
-    {
-        if (caixaId >= 0 && caixaId < caixas.size())
-        {
-            Caixa caixa = caixas.get(caixaId);
-            caixa.relatorioDiario();
-        }
-        else
-        {
+    public void relatorioDiarioCaixa(int caixaId) {
+        if (caixaId >= 0 && caixaId < Caixa.getBalcoes().length) {
+            Caixa caixa = Caixa.getBalcoes()[caixaId];
+          System.out.println("Relatório diário do caixa:");
+            for (Venda venda : caixa.getVendasDiarias()) {
+                System.out.println(venda);
+            }
+            System.out.println("Valor total de vendas diárias: R$" + caixa.valorTotalVendasDiarias());
+            System.out.println("Valor total de vendas de ingressos diárias: R$" + caixa.valorTotalIngressosDiarios());
+            System.out.println("Valor total de vendas de produtos diárias: R$" + caixa.valorTotalProdutosDiarios());
+        } else {
             System.out.println("Caixa inválido.");
         }
     }
 
-    public void relatorioMensalCaixa(int caixaId)
-    {
-        if (caixaId >= 0 && caixaId < caixas.size())
-        {
-            Caixa caixa = caixas.get(caixaId);
-            caixa.relatorioMensal();
-        }
-        else
-        {
+    public void relatorioMensalCaixa(int caixaId) {
+        if (caixaId >= 0 && caixaId < Caixa.getBalcoes().length) {
+            Caixa caixa = Caixa.getBalcoes()[caixaId];
+            System.out.println("Relatório mensal do caixa:");
+            for (Venda venda : caixa.getVendasMensais()) {
+                System.out.println(venda);
+            }
+            System.out.println("Valor total de vendas mensais: R$" + caixa.valorTotalVendasMensais());
+            System.out.println("Valor total de vendas de ingressos mensais: R$" + caixa.valorTotalIngressosMensais());
+            System.out.println("Valor total de vendas de ingressos mensais: R$" + caixa.valorTotalIngressosMensais());
+        } else {
             System.out.println("Caixa inválido.");
         }
     }
 
-    public void controleEstoque()
-    {
+    public void controleEstoque() {
         System.out.println("Controle de estoque:");
         estoque.listarProdutosDisponiveis().forEach(System.out::println);
     }
 
-    // método na classe estoque
-    /*
     public void controleValidade() {
         System.out.println("Controle de validade:");
         estoque.verificarValidade();
     }
-     */
-    public void relatorioFilmesMaisAssistidos()
-    {
+
+    public void relatorioFilmesMaisAssistidos() {
         List<Filme> filmesMaisAssistidos = filmes.stream()
-                .sorted(Comparator.comparingInt(Filme::getTotalEspectadores).reversed()) // Ordena os filmes em ordem decrescente pelo número total de espectadores
-                .collect(Collectors.toList()); // Coleta os filmes ordenados em uma nova lista.
+                .sorted(Comparator.comparingInt(Filme::getTotalEspectadores).reversed())
+                .collect(Collectors.toList());
 
         System.out.println("Relatório de filmes mais assistidos:");
-        for (Filme filme : filmesMaisAssistidos)
-        {
+        for (Filme filme : filmesMaisAssistidos) {
             System.out.println(filme);
         }
     }
 
-    public void relatorioGenerosMaisAssistidos()
-    {   //Construindo um mapa
-        // para cada filme, o mapa atualiza p o total de espectadores daquele genero  
-        Map<String, Integer> generoEspectadores = new HashMap<>(); // associa cada genero ao total de espectadores
-        for (Filme filme : filmes)
-        {                   // merge combina a chave genero com o valor totalEspextadores
-            generoEspectadores.merge(filme.getGenero(), filme.getTotalEspectadores(), Integer::sum); //adiciona o número total de espectadores ao gênero correspondente.  
+    public void relatorioGenerosMaisAssistidos() {
+        Map<String, Integer> generoEspectadores = new HashMap<>();
+        for (Filme filme : filmes) {
+            generoEspectadores.merge(filme.getGenero(), filme.getTotalEspectadores(), Integer::sum);
         }
 
-        List<Map.Entry<String, Integer>> generosMaisAssistidos = generoEspectadores.entrySet().stream() //Converte o conjunto de entradas do mapa em um fluxo de dados.
-                .sorted(Comparator.comparingInt(Map.Entry<String, Integer>::getValue).reversed()) // Ordena os gêneros em ordem decrescente pelo número total de espectadores.
-                .collect(Collectors.toList()); // Coleta os gêneros ordenados em uma nova lista.
+        List<Map.Entry<String, Integer>> generosMaisAssistidos = generoEspectadores.entrySet().stream()
+                .sorted(Comparator.comparingInt(Map.Entry<String, Integer>::getValue).reversed())
+                .collect(Collectors.toList());
 
         System.out.println("Relatório de gêneros mais assistidos:");
-        for (Map.Entry<String, Integer> rankingGeneros : generosMaisAssistidos)
-        {
-            System.out.println("Gênero: " + rankingGeneros.getKey() + ", Total de Espectadores: " + rankingGeneros.getValue());
+        for (Map.Entry<String, Integer> entry : generosMaisAssistidos) {
+            System.out.println("Gênero: " + entry.getKey() + ", Total de Espectadores: " + entry.getValue());
         }
     }
 }
+

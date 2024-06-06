@@ -3,9 +3,12 @@
  */
 package com.mycompany.newcinema;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,9 +17,9 @@ import java.util.List;
  */
 public class NewCinema
 {
-
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
+        
         GestaoDeFilmes gestaoDeFilmes = new GestaoDeFilmes();
 
         gestaoDeFilmes.cadastraFilme("Titanic", "Acao", Duration.ofMinutes(120));
@@ -99,12 +102,23 @@ public class NewCinema
         System.out.println(carrinho);
         
         Caixa caixa = new Caixa(carrinho);
-        caixa.informarValorIngresso(); 
+        //caixa.informarValorIngresso(); 
 
         System.out.println("\nDetalhes do Caixa:");
         System.out.println(caixa);
 
         caixa.efetuarPagamento();
-
+        
+        List<Produto> produtos = new ArrayList<>();
+        // Ordena a lista de produtos pelo nome
+        Collections.sort(produtos, ComparacoesProduto.comparaNomes());
+        
+         // Ordena a lista de Filmes pelo nome
+        Collections.sort(filmes, ComparacoesFilme.comparaNomes());
+        
+        
+        Repositorys.SalvarFilmes(filmes);
+        Repositorys.SalvarProdutos(produtos);
+        
     }
 }
