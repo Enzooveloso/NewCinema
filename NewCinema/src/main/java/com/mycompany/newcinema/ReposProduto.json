@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "nome": "Bebida",
+    "validade": "2024-11-30",
+    "preco": 8.0
+  },
+  {
+    "nome": "Guloseima",
+    "validade": "2024-10-31",
+    "preco": 6.0
+  },
+  {
+    "nome": "Pipoca",
+    "validade": "2024-12-31",
+    "preco": 10.0
+  }
+]

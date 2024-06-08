@@ -103,6 +103,11 @@ public class Carrinho
         this.scanner = scanner;
     }
 
+    public Carrinho()
+    {
+    }
+    
+
     public Carrinho(Estoque estoque)
     {
         this.poltronasSelecionadas = new ArrayList<>();

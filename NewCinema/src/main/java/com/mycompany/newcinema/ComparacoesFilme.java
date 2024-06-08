@@ -51,8 +51,6 @@ public class ComparacoesFilme {
     /**
      * Compara dois objetos Filme pela Duração.
      *
-     * @param f1 o primeiro filme a ser comparado.
-     * @param f2 o segundo filme a ser comparado.
      * @return um valor negativo se f1 tiver menor duração que f2, zero se ambos
      * tiverem a mesma duração, um valor positivo se f1 tiver maior duração que f2.
      */

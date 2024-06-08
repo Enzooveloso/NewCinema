@@ -12,11 +12,12 @@ import java.time.LocalDate;
  */
 public class Venda
 {
-
     private LocalDate data;
     private double valorTotal;
     private double valorIngressos;
     private double valorProdutos;
+    private String extrato;
+    
 
      public Venda(LocalDate data, double valorTotal, double valorIngressos, double valorProdutos) {
         this.data = data;
@@ -65,12 +66,24 @@ public class Venda
         this.valorProdutos = valorProdutos;
     }
 
-    @Override
-    public String toString()
+    public String getExtrato()
     {
-        return "Venda{"
-                + "data=" + data
-                + ", valor=" + valorTotal
-                + '}';
+        return extrato;
+    }
+
+    public void setExtrato(String extrato)
+    {
+        this.extrato = extrato;
+    }
+
+    @Override
+    public String toString() {
+        return "Venda{" +
+                "data=" + data +
+                ", valorTotal=" + valorTotal +
+                ", valorIngressos=" + valorIngressos +
+                ", valorProdutos=" + valorProdutos +
+                ", extrato='" + extrato + '\'' +
+                '}';
     }
 }

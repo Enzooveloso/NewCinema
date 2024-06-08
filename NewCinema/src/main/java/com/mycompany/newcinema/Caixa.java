@@ -20,6 +20,7 @@ public class Caixa
     private Carrinho carrinho;
     public List<Venda> vendasDiarias;
     private List<Venda> vendasMensais;
+    private Map<Cliente, List<Venda>> vendasPorCliente;
     private static final Caixa[] balcoes = new Caixa[5];
 
     public double getValorIngresso()
@@ -60,6 +61,16 @@ public class Caixa
     public void setVendasMensais(List<Venda> vendasMensais)
     {
         this.vendasMensais = vendasMensais;
+    }
+
+    public Map<Cliente, List<Venda>> getVendasPorCliente()
+    {
+        return vendasPorCliente;
+    }
+
+    public void setVendasPorCliente(Map<Cliente, List<Venda>> vendasPorCliente)
+    {
+        this.vendasPorCliente = vendasPorCliente;
     }
 
     /**
@@ -157,14 +168,25 @@ public class Caixa
      * Efetua o pagamento da compra, registrando os espectadores e adicionando a
      * venda às listas diárias e mensais.
      */
-    public void efetuarPagamento()
-    {
-        double totalCompra = valorTotalCompra();
-        System.out.println("Pagamento efetuado no valor de: R$" + totalCompra);
-        carrinho.getSessao().registrarEspectadores(carrinho.getQuantidadeIngressos());
-        vendasDiarias.add(new Venda(LocalDate.now(), totalCompra, valorTotalIngressos(), valorTotalProdutos()));
-        vendasMensais.add(new Venda(LocalDate.now(), totalCompra, valorTotalIngressos(), valorTotalProdutos()));
+    public void efetuarPagamento(Cliente cliente) {
+    double totalCompra = valorTotalCompra();
+    System.out.println("Pagamento efetuado no valor de: R$" + totalCompra);
+    carrinho.getSessao().registrarEspectadores(carrinho.getQuantidadeIngressos());
+    Venda venda = new Venda(LocalDate.now(), totalCompra, valorTotalIngressos(), valorTotalProdutos());
+    vendasDiarias.add(venda);
+    vendasMensais.add(venda);
+
+    if (!vendasPorCliente.containsKey(cliente)) {
+        vendasPorCliente.put(cliente, new ArrayList<>());
     }
+    vendasPorCliente.get(cliente).add(venda);
+
+    // Gera o extrato da venda
+    String extrato = extratoVenda();
+    System.out.println(extrato);
+    venda.setExtrato(extrato); // Supondo que a classe Venda tenha um campo para o extrato
+}
+
 
     /**
      * Cancela o pagamento da compra, aplicando uma taxa de cancelamento.
@@ -237,17 +259,38 @@ public class Caixa
         return vendasMensais.stream().mapToDouble(Venda::getValorProdutos).sum();
     }
 
-    public String extratoVenda()
+    /**
+     * Lista todas as vendas diárias.
+     */
+    public void listarVendasDiarias()
     {
+        for (Venda venda : vendasDiarias)
+        {
+            System.out.println(venda);
+        }
+    }
+
+    /**
+     * Lista todas as vendas mensais.
+     */
+    public void listarVendasMensais()
+    {
+        for (Venda venda : vendasMensais)
+        {
+            System.out.println(venda);
+        }
+    }
+
+   public String extratoVenda() {
         return "Extrato da venda{"
                 + ", valorTotalIngressos: " + valorTotalIngressos()
                 + ", filme selecionado: " + carrinho.getFilme().getTitulo()
                 + ", sessao: " + carrinho.getSessao().getHorarioInicio().format(DateTimeFormatter.ofPattern("HH:mm")) + ", " + carrinho.getSessao().getSalas()
                 + ", Poltrona(s) selecionada(s): " + carrinho.getPoltronasSelecionadas()
                 + ", valorTotalProdutos: " + valorTotalProdutos()
-                + ", Produto selecionado" + (carrinho.getProdutosSelecionados() != null ? carrinho.getProdutosSelecionados() : "Nenhum filme selecionado")
+                + ", Produto selecionado: " + (carrinho.getProdutosSelecionados() != null ? carrinho.getProdutosSelecionados() : "Nenhum produto selecionado")
                 + ", valorTotalCompra: " + valorTotalCompra()
-                + ", Tenho uma'otima experiencia no CineDjamas "
+                + ", Tenha uma ótima experiência no CineDjamas "
                 + '}';
     }
 

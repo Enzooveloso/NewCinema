@@ -21,6 +21,46 @@ public class Estoque
     private int quantidadePipoca;
     private int quantidadeGuloseimas;
     private int quantidadeBebidas;
+
+    public List<Produto> getProdutos()
+    {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos)
+    {
+        this.produtos = produtos;
+    }
+
+    public int getQuantidadePipoca()
+    {
+        return quantidadePipoca;
+    }
+
+    public void setQuantidadePipoca(int quantidadePipoca)
+    {
+        this.quantidadePipoca = quantidadePipoca;
+    }
+
+    public int getQuantidadeGuloseimas()
+    {
+        return quantidadeGuloseimas;
+    }
+
+    public void setQuantidadeGuloseimas(int quantidadeGuloseimas)
+    {
+        this.quantidadeGuloseimas = quantidadeGuloseimas;
+    }
+
+    public int getQuantidadeBebidas()
+    {
+        return quantidadeBebidas;
+    }
+
+    public void setQuantidadeBebidas(int quantidadeBebidas)
+    {
+        this.quantidadeBebidas = quantidadeBebidas;
+    }
     
             /**
              * Construtor padrão que inicializa o estoque com listas vazias e
@@ -41,6 +81,7 @@ public class Estoque
      *
      * @param nome
      * @param validade
+     * @param preco
      * @return
      */
     public Produto cadastrarProduto(String nome, LocalDate validade, double preco)

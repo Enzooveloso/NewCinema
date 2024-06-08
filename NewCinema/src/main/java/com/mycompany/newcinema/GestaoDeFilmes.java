@@ -49,7 +49,10 @@ public  class GestaoDeFilmes
     {
         return filmes.removeIf(x -> x.getTitulo().equals(name));
     }
-
+    
+    public List<Filme> listarFilmes() {
+        return new ArrayList<>(filmes);
+    }
     @Override
     public String toString()
     {

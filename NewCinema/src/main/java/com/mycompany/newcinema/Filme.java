@@ -5,7 +5,9 @@
 package com.mycompany.newcinema;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -21,6 +23,7 @@ public class Filme
     private Duration duracao;
     private int totalEspectadores;
     private long tempoTotalExibicao;
+    private static List<Filme> filmes = new ArrayList<>();
 
     public String getTitulo()
     {
